@@ -14,9 +14,6 @@
 import java.util.Scanner;
 
 public class App {
-    // Change this to true to enable command line args, and not prompt keyboard
-    // input
-    static boolean useCommandLineArgs = false;
 
     public static void main(String[] args) throws Exception {
         String filePath;
