@@ -1,3 +1,4 @@
+
 /*
     Mackenzie Hamlett
     Evan Smith
@@ -11,24 +12,32 @@
     - the file is taken in through the user entering the file path from the computer and not assuming the .txt file is added to the program file, I will text yall later and see which yall think is better, not hard to switch to the other.
 */
 import java.util.Scanner;
+
 public class App {
-    // Change this to true to enable command line args, and not prompt keyboard input
-    static boolean useCommandLineArgs = false; 
+    // Change this to true to enable command line args, and not prompt keyboard
+    // input
+    static boolean useCommandLineArgs = false;
+
     public static void main(String[] args) throws Exception {
         String filePath;
         ScannerClass scanFile = new ScannerClass();
-        if (!useCommandLineArgs) {
+
+        // Check command line arguments
+        try {
+            filePath = args[0]; // Get the cmd line arg
+            System.out.println(filePath);
+        }
+        // If no command line arguments, we ask the user to type in the file path
+        catch (IndexOutOfBoundsException eBoundsException) {
             Scanner keyboard = new Scanner(System.in);
 
             // scan in the file using users FILE PATH FROM COMPUTER
-            System.out.println("Input file path: ");
+            System.out.print("Input file path: ");
             filePath = keyboard.nextLine();
-            
+
             keyboard.close();
-        } else {
-            filePath = args[0]; // Get the cmd line arg 
-            System.out.print(filePath);
         }
+
         if (filePath.contains(".txt")) {
             // Pass it to the actual scanner
             scanFile.scan_ScannerClass(filePath);
@@ -36,6 +45,6 @@ public class App {
             System.out.println("error.");
             System.exit(0);
         }
-    
+
     }
 }
