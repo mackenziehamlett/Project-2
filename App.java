@@ -1,5 +1,7 @@
+
 /*
     Mackenzie Hamlett
+    Evan Smith
     Jacob Cox
     Zachary Kay
 
@@ -12,21 +14,37 @@
 import java.util.Scanner;
 
 public class App {
+    // Change this to true to enable command line args, and not prompt keyboard
+    // input
+    static boolean useCommandLineArgs = false;
+
     public static void main(String[] args) throws Exception {
         String filePath;
-        Scanner keyboard = new Scanner(System.in);
         ScannerClass scanFile = new ScannerClass();
 
-        // scan in the file using users FILE PATH FROM COMPUTER
-        System.out.println("Input file path: ");
-        filePath = keyboard.nextLine();
-        
+        // Check command line arguments
+        try {
+            filePath = args[0]; // Get the cmd line arg
+            System.out.println(filePath);
+        }
+        // If no command line arguments, we ask the user to type in the file path
+        catch (IndexOutOfBoundsException eBoundsException) {
+            Scanner keyboard = new Scanner(System.in);
+
+            // scan in the file using users FILE PATH FROM COMPUTER
+            System.out.print("Input file path: ");
+            filePath = keyboard.nextLine();
+
+            keyboard.close();
+        }
+
         if (filePath.contains(".txt")) {
+            // Pass it to the actual scanner
             scanFile.scan_ScannerClass(filePath);
         } else {
             System.out.println("error.");
             System.exit(0);
         }
-    
+
     }
 }

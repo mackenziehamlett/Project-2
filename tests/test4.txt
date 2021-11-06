@@ -1,0 +1,6 @@
+// returns error.
+read a
+write a
+myId := 10 + 2
+write myId
+b := 10 + (9.1 - 2) / 2 * 3
