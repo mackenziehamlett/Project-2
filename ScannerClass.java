@@ -47,7 +47,7 @@ public class ScannerClass {
         try {
             keyboard = new Scanner(new FileInputStream(filePath));
         } catch (FileNotFoundException e) {
-            System.out.println("FILE NOT FOUND TRY FULL PATH FOR THE FILE");
+            System.out.println("FILE NOT FOUND. TRY FULL PATH FOR THE FILE");
             System.exit(0);
         }
         
