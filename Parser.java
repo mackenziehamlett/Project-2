@@ -38,10 +38,22 @@ parser.parse();
         instead of (or in addition to) printing the XML tag,
         we can just edit it here
     */
+
+    /*
+     * If we want to write a string to a file, instead of (or in addition to)
+     * printing the XML tag, we can just edit it here
+     */
     /// usage: this.print(string)
+    private void indent(int depth) {
+        for (int i = 0; i < depth; i++) {
+            this.print("\t");
+        }
+    }
+
     private void print(String string) {
         System.out.print(string);
     }
+
     /// usage: this.println(string)
     private void println(String string) {
         System.out.println(string);
