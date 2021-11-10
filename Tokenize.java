@@ -8,7 +8,7 @@ public class Tokenize {
     String returnVAL = "";
 
     // constructor
-    public void Tokenize() {
+    public Tokenize() {
         token = "";
         tokenizedToken = "";
         finalString = "";
