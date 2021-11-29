@@ -1,7 +1,10 @@
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.HashMap;
 
 public class Tokenize {
+    IDHashMap IDhash = new IDHashMap();
+    int counter = 0;
     String token;
     String tokenizedToken;
     String finalString ="";
@@ -12,6 +15,27 @@ public class Tokenize {
         token = "";
         tokenizedToken = "";
         finalString = "";
+    }
+
+    public IDHashMap returnHashMap() {
+        return IDhash;
+    }
+
+    // determine if character is a number (or decimal point)
+    public static boolean isNumber( char val ) {
+        if ((val >= 48 && val <= 57) || val == 46) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isOperator( char val ) {
+        if ((val >= 42 && val <= 47) && val != 46) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // return if the element is a number
@@ -42,6 +66,25 @@ public class Tokenize {
         } else {
             return true;
         }
+    }
+
+    public void set_TokenizeExpr( String expr ) {
+        String exprs = expr+", ";
+        CharacterIterator iterator = new StringCharacterIterator(expr);
+        while (iterator.current() != CharacterIterator.DONE) {
+            if (iterator.current() == 43) {
+                exprs += "plus, ";
+            } else if (iterator.current() == 45) {
+                exprs += "minus, ";
+            } else if (iterator.current() == 42) {
+                exprs += "times, ";
+            } else if (iterator.current() == 47) {
+                exprs += "div, ";
+            }
+            iterator.next();
+        }
+
+        IDhash.setToken("expr-"+IDhash.size, exprs);
     }
 
     // Find which token the current element is
@@ -88,6 +131,9 @@ public class Tokenize {
         // id
         if (firstLetter(token) && !finalString.contains("id") && (!token.contains("read") && !token.contains("write"))) {
             finalString += " id";
+            
+            // TODO add id-xxx to a hashmap so we can access it in the parser
+            IDhash.setToken("id-"+IDhash.size, token);
             returnVAL = "id, ";
         } 
         

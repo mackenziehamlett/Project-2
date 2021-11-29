@@ -13,6 +13,7 @@ public class ScannerClass {
     Tokenize tokenizedToken = new Tokenize();
     String splitToken="";
     String valueString = "";
+    String exprToken = "";
 
     // constructor
     public void scan_ScannerClass() {
@@ -40,6 +41,14 @@ public class ScannerClass {
         }
     }
 
+    public static boolean isOperator( char val ) {
+        if ((val >= 42 && val <= 47) && val != 46) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // SCAN FUNCTION (will be long)
     public void scan_ScannerClass( String fPath ) {
         filePath = fPath;
@@ -55,6 +64,7 @@ public class ScannerClass {
         do {
             currentToken = "";
             splitToken = "";
+            exprToken = "";
             firstToken = keyboard.next();
             valueString += firstToken+", ";
             CharacterIterator iterator = new StringCharacterIterator(firstToken);
@@ -69,6 +79,17 @@ public class ScannerClass {
             if (firstToken.equals("*/")) {
                 firstToken = keyboard.next();
             }
+
+            if (isNumber(iterator.current()) && isOperator(iterator.next())) {
+                iterator.previous();
+                while (iterator.current() != CharacterIterator.DONE) {
+                    exprToken += iterator.current();
+                    iterator.next();
+                }
+                tokenizedToken.set_TokenizeExpr(exprToken);
+            }
+
+            
 
             // LONGEST POSSIBLE TOKEN RULE IMPLEMENTATION
             while (iterator.current() != CharacterIterator.DONE && (isLetter(iterator.current()) || isNumber(iterator.current()))) {
@@ -109,7 +130,7 @@ public class ScannerClass {
 
         // get rid of last comma
         String finalString = tokenString.substring(0, tokenString.length()-2);
-        new Parser(finalString, valueString);
+
         //System.out.print(parseString);
         //System.out.println("("+ finalString +")");
     }

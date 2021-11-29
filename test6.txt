@@ -1,2 +1,1 @@
-read
-write
+5*10/40 sdgsg
