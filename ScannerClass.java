@@ -109,7 +109,7 @@ public class ScannerClass {
 
         // get rid of last comma
         String finalString = tokenString.substring(0, tokenString.length()-2);
-        new Parser(finalString, valueString);
+        
         //System.out.print(parseString);
         //System.out.println("("+ finalString +")");
     }
