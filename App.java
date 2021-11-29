@@ -36,7 +36,13 @@ public class App {
 
         if (filePath.contains(".txt")) {
             // Pass it to the actual scanner
-            scanFile.scan_ScannerClass(filePath);
+            IDHashMap gHashMap = new IDHashMap();
+            String tokenString = scanFile.scan_ScannerClass(filePath, gHashMap);
+            System.out.println(tokenString);
+            gHashMap.print();
+            Parser parser = new Parser(tokenString, gHashMap);
+            parser.parse();
+    
         } else {
             System.out.println("error.");
             System.exit(0);

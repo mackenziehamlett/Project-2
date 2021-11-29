@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Collections;
 
 public class Parser {
     /*
      * Usage Parser parser = new Parser(...); parser.parse();
      */
-    ArrayList<Object> tokenList;
+    ArrayList<Object> tokenList = new ArrayList<Object>();
     IDHashMap idHashMap;
     // String[] valueList;
 
@@ -23,6 +24,10 @@ public class Parser {
         this.tokenList = tokenList;
         this.idHashMap = ids;
     }
+    public Parser(String tokenString, IDHashMap ids) {
+        Collections.addAll(tokenList,tokenString.split(", "));
+        this.idHashMap = ids;
+    }
 
     // ? TODO return type?
     // Just prints out stuff, recursively calls things based on the token value
@@ -31,9 +36,16 @@ public class Parser {
         this.parseHelper(0, this.tokenList, this.idHashMap);
     }
 
+
+    private String getElemAndPop() {
+        return this.tokenList.remove(0).toString();
+    }
     // We have no counter variable, we are resizing tokenList and valueList to
     // remove the first element from the next call
     private void parseHelper(int depth, ArrayList<Object> tokenList, IDHashMap idHashMap) {
+        // if (tokenList.size() == 0) {
+        //     return;
+        // }
         // // int tokensUsed = 0; // Incremement each time you use a token
         // // int valuesUsed = 0; // Increment each time you use a value
 
@@ -47,16 +59,17 @@ public class Parser {
         // TODO switch case logic here
         // TODO .....
 
-        ArrayList<Object> tokens = (ArrayList<Object>) tokenList.get(0);
+        // ArrayList<Object> tokens = (ArrayList<Object>) tokenList.get(0);
+
         // // String valueToken = valueList[0];
         //* <stmt> → id assign <expr> | read id | write <expr>
-        switch (tokens.get(0).toString()) {
+        switch (this.getElemAndPop()) {
             
         case "id": //* id assign <expr>
-            if (tokenList.get(1) == "assign") {
+            if (this.getElemAndPop() == "assign") {
                 // ? grab the value, valueToken or go down the <expr> tree ?
                 // todo expr
-                this.println(this.idHashMap.getToken(tokens.get(2).toString()).toString());
+                this.println(this.idHashMap.getToken(this.getElemAndPop()).toString());
             } else {
                 System.out.println("id not followed by assign operator");
                 System.exit(0);
@@ -64,7 +77,8 @@ public class Parser {
             break;
         case "read": //* read id
             this.indent(depth + 1);
-            this.println("<"+tokens.get(0).toString()+">");
+            String _biggerTag = this.getElemAndPop();
+            this.println("<"+_biggerTag+">");
             String _next = tokenList.get(1).toString();
             if (_next.contains("id")) {
                 Object idQueryResult = this.idHashMap.getToken(_next);
@@ -78,7 +92,7 @@ public class Parser {
                 break;
             }
             this.indent(depth + 1);
-            this.println("</"+tokens.get(0).toString()+">");
+            this.println("</"+_biggerTag+">");
 
 
         case "write": //* write <expr>
@@ -86,7 +100,7 @@ public class Parser {
             this.indent(depth);
             this.println("<write>");
             // TODO do expression parsing here EXPR
-            this.println(this.idHashMap.getToken(tokens.get(1).toString()).toString());
+            this.println(this.idHashMap.getToken(tokenList.get(1).toString()).toString());
             this.indent(depth);
             this.println("</write>");
             break;
@@ -103,12 +117,11 @@ public class Parser {
         // This is the next <stmt_list> object basically
         if (tokenList.size() != 0) {
             // * Now we are down into <stmt>'s <stmt_list>
-            this.parseHelper(depth + 1, new ArrayList<Object>(tokenList.subList(0, tokenList.size())),
-                    this.idHashMap.getCopy());
+            // this.parseHelper(depth + 1, new ArrayList<Object>(tokenList.subList(1, tokenList.size())),
+            //         this.idHashMap);
+            this.parseHelper(depth + 1, tokenList, this.idHashMap);
         } else {
-            // TODO we are done printing, all of the parseHelper functions will begin to
-            // indent back and print end tags
-            // ? Does something belong here?
+            return;
         }
 
         this.indent(depth + 1);

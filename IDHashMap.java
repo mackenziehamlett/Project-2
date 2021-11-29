@@ -28,4 +28,8 @@ public class IDHashMap {
     public IDHashMap getCopy() {
         return new IDHashMap(this.ids);
     }
+
+    public void print() {
+        System.out.println(this.ids);
+    }
 }

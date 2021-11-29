@@ -3,7 +3,9 @@ import java.text.StringCharacterIterator;
 import java.util.HashMap;
 
 public class Tokenize {
-    IDHashMap IDhash = new IDHashMap();
+    IDHashMap IDhash;
+    int exprSize = -1;
+    int IDsize = -1;
     int counter = 0;
     String token;
     String tokenizedToken;
@@ -11,10 +13,11 @@ public class Tokenize {
     String returnVAL = "";
 
     // constructor
-    public Tokenize() {
+    public Tokenize(IDHashMap ids) {
         token = "";
         tokenizedToken = "";
         finalString = "";
+        this.IDhash = ids;
     }
 
     public IDHashMap returnHashMap() {
@@ -68,7 +71,7 @@ public class Tokenize {
         }
     }
 
-    public void set_TokenizeExpr( String expr ) {
+    public String set_TokenizeExpr( String expr ) {
         String exprs = expr+", ";
         CharacterIterator iterator = new StringCharacterIterator(expr);
         while (iterator.current() != CharacterIterator.DONE) {
@@ -85,6 +88,8 @@ public class Tokenize {
         }
 
         IDhash.setToken("expr-"+IDhash.size, exprs);
+        exprSize++;
+        return "-"+Integer.toString(exprSize);
     }
 
     // Find which token the current element is
@@ -134,7 +139,8 @@ public class Tokenize {
             
             // TODO add id-xxx to a hashmap so we can access it in the parser
             IDhash.setToken("id-"+IDhash.size, token);
-            returnVAL = "id, ";
+            IDsize++;
+            returnVAL = "id-"+Integer.toString(IDsize)+", ";
         } 
         
         // invalid token

@@ -10,17 +10,18 @@ public class ScannerClass {
     String currentToken ="";
     Scanner keyboard;
     String tokenString="";
-    Tokenize tokenizedToken = new Tokenize();
+    Tokenize tokenizedToken;
     String splitToken="";
     String valueString = "";
     String exprToken = "";
 
     // constructor
-    public void scan_ScannerClass() {
+    public void scan_ScannerClass(IDHashMap ids) {
         filePath = "";
         firstToken = "";
         currentToken = "";
         tokenString = "";
+        this.tokenizedToken = new Tokenize(ids);
     }
 
     // determine if character is a number (or decimal point)
@@ -50,8 +51,9 @@ public class ScannerClass {
     }
 
     // SCAN FUNCTION (will be long)
-    public void scan_ScannerClass( String fPath ) {
+    public String scan_ScannerClass( String fPath, IDHashMap ids ) {
         filePath = fPath;
+        this.tokenizedToken = new Tokenize(ids);
 
         // Make sure the program can find the file in the system
         try {
@@ -86,10 +88,9 @@ public class ScannerClass {
                     exprToken += iterator.current();
                     iterator.next();
                 }
-                tokenizedToken.set_TokenizeExpr(exprToken);
+                tokenString += "expr"+tokenizedToken.set_TokenizeExpr(exprToken)+", ";
+                firstToken = keyboard.next();
             }
-
-            
 
             // LONGEST POSSIBLE TOKEN RULE IMPLEMENTATION
             while (iterator.current() != CharacterIterator.DONE && (isLetter(iterator.current()) || isNumber(iterator.current()))) {
@@ -131,7 +132,8 @@ public class ScannerClass {
         // get rid of last comma
         String finalString = tokenString.substring(0, tokenString.length()-2);
 
-        //System.out.print(parseString);
+        // System.out.print(finalString);
+        return finalString;
         //System.out.println("("+ finalString +")");
     }
 }
