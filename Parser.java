@@ -49,26 +49,46 @@ public class Parser {
 
         ArrayList<Object> tokens = (ArrayList<Object>) tokenList.get(0);
         // // String valueToken = valueList[0];
-        // <stmt> → id assign <expr> | read id | write <expr>
-        switch ((String) tokens.get(0)) {
-
-        case "id": // id assign <expr>
+        //* <stmt> → id assign <expr> | read id | write <expr>
+        switch (tokens.get(0).toString()) {
+            
+        case "id": //* id assign <expr>
             if (tokenList.get(1) == "assign") {
                 // ? grab the value, valueToken or go down the <expr> tree ?
+                // todo expr
+                this.println(this.idHashMap.getToken(tokens.get(2).toString()).toString());
             } else {
                 System.out.println("id not followed by assign operator");
                 System.exit(0);
             }
             break;
-        case "read": // read id
-            if (tokenList.get(1) == "id") {
-                // TODO get the value for this id
-                // TODO use the ID HASH MAP lookup to get the actual value
+        case "read": //* read id
+            this.indent(depth + 1);
+            this.println("<"+tokens.get(0).toString()+">");
+            String _next = tokenList.get(1).toString();
+            if (_next.contains("id")) {
+                Object idQueryResult = this.idHashMap.getToken(_next);
+                this.indent(depth + 2);
+                this.println("<read>");
+                this.indent(depth + 3);
+                // this.println(tokens.get(0).toString());
+                this.println(idQueryResult.toString());
+                this.indent(depth + 2);
+                this.println("</read>");
+                break;
             }
-            break;
+            this.indent(depth + 1);
+            this.println("</"+tokens.get(0).toString()+">");
 
-        case "write": // write <expr>
+
+        case "write": //* write <expr>
             // TODO check for an expression
+            this.indent(depth);
+            this.println("<write>");
+            // TODO do expression parsing here EXPR
+            this.println(this.idHashMap.getToken(tokens.get(1).toString()).toString());
+            this.indent(depth);
+            this.println("</write>");
             break;
 
         default:
@@ -97,18 +117,19 @@ public class Parser {
         this.println("</stmt_list>");
 
     }
-
+  
     /*
      * If we want to write a string to a file, instead of (or in addition to)
      * printing the XML tag, we can just edit it here
      */
-    /// usage: this.print(string)
+    /// usage: this.ident(n) => prints n number of tabs on 1 line, no newline
     private void indent(int depth) {
         for (int i = 0; i < depth; i++) {
             this.print("\t");
         }
     }
-
+    
+    /// usage: this.print(string)
     private void print(String string) {
         System.out.print(string);
     }
@@ -118,3 +139,7 @@ public class Parser {
         System.out.println(string);
     }
 }
+
+
+
+
