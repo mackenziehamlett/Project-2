@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 public class Tokenize {
     IDHashMap IDhash;
-    int exprSize = -1;
     int IDsize = -1;
     int counter = 0;
     String token;
@@ -88,8 +87,8 @@ public class Tokenize {
         }
 
         IDhash.setToken("expr-"+IDhash.size, exprs);
-        exprSize++;
-        return "-"+Integer.toString(exprSize);
+        IDsize++;
+        return "-"+Integer.toString(IDsize);
     }
 
     // Find which token the current element is
