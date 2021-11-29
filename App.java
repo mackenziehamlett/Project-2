@@ -3,7 +3,6 @@
     Mackenzie Hamlett
     Evan Smith
     Jacob Cox
-    Zachary Kay
 
     comments to group: Main will only be used to call the ScannerClass and take in the relevant files, please do not put Scanner functions here!
 
@@ -29,7 +28,7 @@ public class App {
             Scanner keyboard = new Scanner(System.in);
 
             // scan in the file using users FILE PATH FROM COMPUTER
-            System.out.print("Input file path: ");
+            System.out.print("Input file path:");
             filePath = keyboard.nextLine();
 
             keyboard.close();

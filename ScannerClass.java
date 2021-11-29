@@ -12,6 +12,7 @@ public class ScannerClass {
     String tokenString="";
     Tokenize tokenizedToken = new Tokenize();
     String splitToken="";
+    String valueString = "";
 
     // constructor
     public void scan_ScannerClass() {
@@ -47,15 +48,15 @@ public class ScannerClass {
         try {
             keyboard = new Scanner(new FileInputStream(filePath));
         } catch (FileNotFoundException e) {
-            System.out.println("FILE NOT FOUND. TRY FULL PATH FOR THE FILE");
+            System.out.println(filePath+" NOT FOUND. TRY FULL PATH FOR THE FILE");
             System.exit(0);
-        }
-        
+        }        
 
         do {
             currentToken = "";
             splitToken = "";
             firstToken = keyboard.next();
+            valueString += firstToken+", ";
             CharacterIterator iterator = new StringCharacterIterator(firstToken);
 
             // if there is a comment block or comment line
@@ -108,6 +109,8 @@ public class ScannerClass {
 
         // get rid of last comma
         String finalString = tokenString.substring(0, tokenString.length()-2);
-        System.out.println("("+ finalString +")");
+        new Parser(finalString, valueString);
+        //System.out.print(parseString);
+        //System.out.println("("+ finalString +")");
     }
 }

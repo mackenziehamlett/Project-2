@@ -11,7 +11,7 @@ public class Parser {
     public Parser(String tokenString, String valueString) {
         this.tokenList = tokenString.split(", "); // "a, b, c" => [a, b, c]
         this.valueList = valueString.split(", ");
-
+        parse();
     }
 
     // Constructor from lists
@@ -30,6 +30,7 @@ public class Parser {
     // We have no counter variable, we are resizing tokenList and valueList to
     // remove the first element from the next call
     private void parseHelper(int depth, String[] tokenList, String[] valueList) {
+        int count = 0;
         this.indent(depth);
         this.println("<stmt_list>");
 
@@ -39,6 +40,22 @@ public class Parser {
         // This is the current <stmt> object basically
         // TODO switch case logic here
         // TODO .....
+        this.indent(depth + 2);
+        this.println("<"+tokenList[count]+">");
+
+        // switch for the stmt() object
+        int depthCount = 3;
+        switch(tokenList[count]) {
+            case "id":
+                //null
+                break;
+            case "read":
+                //null
+                break;
+            case "write":
+                //null
+                break;
+        }        
         /*
          * ... ...
          */
@@ -72,6 +89,8 @@ public class Parser {
             }
         }
 
+        this.indent(depth + 2);
+        this.println("</"+tokenList[count]+">");
         this.indent(depth + 1);
         this.println("</stmt>");
         this.indent(depth);
