@@ -1,35 +1,42 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Parser {
     /*
      * Usage Parser parser = new Parser(...); parser.parse();
      */
-    String[] tokenList;
-    String[] valueList;
+    ArrayList<Object> tokenList;
+    IDHashMap idHashMap;
+    // String[] valueList;
 
     // Constructor from strings
-    public Parser(String tokenString, String valueString) {
-        this.tokenList = tokenString.split(", "); // "a, b, c" => [a, b, c]
-        this.valueList = valueString.split(", ");
+    // public Parser(String tokenString, String valueString) {
+    // this.tokenList = tokenString.split(", "); // "a, b, c" => [a, b, c]
 
-    }
+    // // this.valueList = valueString.split(", ");
 
-    // Constructor from lists
-    public Parser(String[] tokenList, String[] valueList) {
+    // }
+
+    // Constructor
+    public Parser(ArrayList<Object> tokenList, IDHashMap ids) {
         this.tokenList = tokenList;
-        this.valueList = valueList;
+        this.idHashMap = ids;
     }
 
     // ? TODO return type?
     // Just prints out stuff, recursively calls things based on the token value
     public void parse() {
         // TODO print <program>
-        this.parseHelper(0, this.tokenList, this.valueList);
+        this.parseHelper(0, this.tokenList, this.idHashMap);
     }
 
     // We have no counter variable, we are resizing tokenList and valueList to
     // remove the first element from the next call
-    private void parseHelper(int depth, String[] tokenList, String[] valueList) {
+    private void parseHelper(int depth, ArrayList<Object> tokenList, IDHashMap idHashMap) {
+        // // int tokensUsed = 0; // Incremement each time you use a token
+        // // int valuesUsed = 0; // Increment each time you use a value
+
         this.indent(depth);
         this.println("<stmt_list>");
 
@@ -39,37 +46,49 @@ public class Parser {
         // This is the current <stmt> object basically
         // TODO switch case logic here
         // TODO .....
-        /*
-         * ... ...
-         */
+
+        ArrayList<Object> tokens = (ArrayList<Object>) tokenList.get(0);
+        // // String valueToken = valueList[0];
+        // <stmt> → id assign <expr> | read id | write <expr>
+        switch ((String) tokens.get(0)) {
+
+        case "id": // id assign <expr>
+            if (tokenList.get(1) == "assign") {
+                // ? grab the value, valueToken or go down the <expr> tree ?
+            } else {
+                System.out.println("id not followed by assign operator");
+                System.exit(0);
+            }
+            break;
+        case "read": // read id
+            if (tokenList.get(1) == "id") {
+                // TODO get the value for this id
+                // TODO use the ID HASH MAP lookup to get the actual value
+            }
+            break;
+
+        case "write": // write <expr>
+            // TODO check for an expression
+            break;
+
+        default:
+            System.out.println("Error has occured");
+            break;
+        }
 
         // Now that we got the switch/case thing done, we go to the next call
         // Call other parseHelper functions to do specific things, that need their own
         // depth
 
         // This is the next <stmt_list> object basically
-        if (tokenList.length != 0 && valueList.length != 0) {
-
-            this.parseHelper(depth + 1, 
-                    Arrays.copyOfRange(tokenList, 1, tokenList.length),
-                    Arrays.copyOfRange(valueList, 1, valueList.length));
+        if (tokenList.size() != 0) {
+            // * Now we are down into <stmt>'s <stmt_list>
+            this.parseHelper(depth + 1, new ArrayList<Object>(tokenList.subList(0, tokenList.size())),
+                    this.idHashMap.getCopy());
         } else {
             // TODO we are done printing, all of the parseHelper functions will begin to
             // indent back and print end tags
-            if (tokenList.length != valueList.length) {
-                //* This is debugging stuff, you can ignore it. I'm trying to see if some weird edge cases happen, 
-                //* eventually and I'd rather catch them instantly then debug
-                System.out.println("TokenList and valueList are not the same size during parseHelperCalls");
-                System.out.println("Is this okay/allowed????");
-                System.out.println("Depth: " + depth);
-                for (String s : this.tokenList) {
-                    System.out.print(s);
-                }
-                for (String s : this.valueList) {
-                    System.out.print(s);
-                }
-                System.exit(0);
-            }
+            // ? Does something belong here?
         }
 
         this.indent(depth + 1);
