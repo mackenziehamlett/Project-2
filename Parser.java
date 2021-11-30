@@ -68,7 +68,6 @@ public class Parser {
         expList.remove(expList.size() - 1);
 
         // Now start parsing
-
         parse_expr_help(expr, tokenList, idHashMap, depth, numberList);
         return;
     }
@@ -253,9 +252,19 @@ public class Parser {
                 this.println("<write>");
                 // this.indent(depth + 2Tes); // * <expr_print_prob
                 // TODO do expression parsing here EXPR
-                this.parse_expr(tokenList, idHashMap, depth + 1);
-                this.indent(depth + 1);
-                this.println("</write>");
+                if (this.peakElem(0).contains("id")) {
+                    this.indent(depth + 3);
+                    // this.println(tokens.get(0).toString());
+                    this.println("<id>");
+                    this.indent(depth + 4);
+                    this.println(this.idHashMap.getToken(this.getElemAndPop()).toString());
+                    this.indent(depth + 3);
+                    this.println("</id>");
+                } else {
+                    this.parse_expr(tokenList, idHashMap, depth + 1);
+                }
+                    this.indent(depth + 2);
+                    this.println("</write>");
                 break;
 
             default:
@@ -278,9 +287,9 @@ public class Parser {
             return;
         }
 
-        this.indent(depth + 1);
+        this.indent(depth + 2);
         this.println("</stmt>");
-        this.indent(depth);
+        this.indent(depth + 1);
         this.println("</stmt_list>");
 
     }

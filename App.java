@@ -40,7 +40,8 @@ public class App {
             String tokenString = scanFile.scan_ScannerClass(filePath, gHashMap);
             System.out.println(tokenString);
             gHashMap.print();
-            Parser parser = new Parser(tokenString, gHashMap);
+            // Parser parser = new Parser(tokenString, gHashMap);
+            Parser parser = new Parser("id-0, assign, expr-1, div, div, write, id-0", gHashMap);
             parser.parse();
     
         } else {
