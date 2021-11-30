@@ -162,7 +162,7 @@ public class Parser {
             }
         } else {
             if (this.peakElem(0).equals("div") || this.peakElem(0).equals("times")) {
-                this.indent(depth + 1);
+                this.indent(depth + 2);
                 String mult_op = this.getElemAndPop();
                 this.print("<" + mult_op + ">");
                 this.println("</" + mult_op + ">");
