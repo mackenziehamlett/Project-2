@@ -17,6 +17,9 @@ files:
   
   All files should be in the same folder including the .txt file.
   
+  IMPORTANT:
+  all text file inputs MUST follow the correct format otherwise output will throw exceptions
+  
   Thank you!
   
   
