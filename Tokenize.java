@@ -76,6 +76,7 @@ public class Tokenize {
 
     public String set_TokenizeExpr( String expr ) {
         String exprs = expr+", ";
+        returnVals = "";
         CharacterIterator iterator = new StringCharacterIterator(expr);
         while (iterator.current() != CharacterIterator.DONE) {
             if (iterator.current() == 43) {
