@@ -147,15 +147,6 @@ public class Parser {
                 this.println("</id>");
 
             } else {
-                // TODO print number
-                // int i = 0;
-                // for (; i< expr.length(); i++) {
-                // if (expr.charAt(i) == '/' || expr.charAt(i) == '*' || expr.charAt(i) == '+'
-                // || expr.charAt(i) == '-') {
-                // break;
-                // }
-                // System.out.print(expr.charAt(i));
-                // }
                 if (numberList.size() != 0) {
                     this.indent(depth + 2);
                     this.println("<number>");
@@ -184,11 +175,7 @@ public class Parser {
     // We have no counter variable, we are resizing tokenList and valueList to
     // remove the first element from the next call
     private void parseHelper(int depth, ArrayList<Object> tokenList, IDHashMap idHashMap) {
-        // if (tokenList.size() == 0) {
-        // return;
-        // }
-        // // int tokensUsed = 0; // Incremement each time you use a token
-        // // int valuesUsed = 0; // Increment each time you use a value
+      
 
         this.indent(depth);
         this.println("<stmt_list>");
@@ -198,9 +185,6 @@ public class Parser {
 
         // This is the current <stmt> object basically
 
-        // ArrayList<Object> tokens = (ArrayList<Object>) tokenList.get(0);
-
-        // // String valueToken = valueList[0];
         // * <stmt> → id assign <expr> | read id | write <expr>
         String _switchCase = this.getElemAndPop();
         debug(_switchCase);
@@ -222,7 +206,6 @@ public class Parser {
                 this.getElemAndPop();
                 if (this.peakElem(0).contains("expr"))
                     // Print expr
-                    // this.indent(depth + 1);
                 this.parse_expr(tokenList, idHashMap, depth);
             }
         } else {
@@ -235,7 +218,6 @@ public class Parser {
             // TODO "read" is not correct
             case "read": // * read id
                 this.indent(depth + 1);
-                // String _biggerTag = this.getElemAndPop();
                 this.println("<" + "read" + ">");
                 String _next = this.getElemAndPop();
                 if (_next.contains("id")) {
@@ -243,7 +225,6 @@ public class Parser {
                     this.indent(depth + 2);
                     this.println("<read>");
                     this.indent(depth + 3);
-                    // this.println(tokens.get(0).toString());
                     this.println(idQueryResult.toString());
                     this.indent(depth + 2);
                     this.println("</read>");
@@ -256,11 +237,9 @@ public class Parser {
                 // TODO check for an expression
                 this.indent(depth + 2);
                 this.println("<write>");
-                // this.indent(depth + 2Tes); // * <expr_print_prob
                 // TODO do expression parsing here EXPR
                 if (this.peakElem(0).contains("id")) {
                     this.indent(depth + 3);
-                    // this.println(tokens.get(0).toString());
                     this.println("<id>");
                     this.indent(depth + 4);
                     this.println(this.idHashMap.getToken(this.getElemAndPop()).toString());
