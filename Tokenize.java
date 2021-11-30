@@ -112,7 +112,9 @@ public class Tokenize {
             returnVAL = "read, ";
         } else if (token.equalsIgnoreCase("write") && !finalString.contains("write")) {
             finalString += " write";
-            returnVAL = "write, ";
+            int tempsize = IDsize-1;
+            String tempS = Integer.toString(tempsize);
+            returnVAL = "write, id-"+tempS +", ";
         }
 
         // number
