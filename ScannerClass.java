@@ -95,7 +95,11 @@ public class ScannerClass {
                     iterator.next();
                 }
                 tokenString += "expr"+tokenizedToken.set_TokenizeExpr(exprToken)+", ";
-                firstToken = keyboard.next();
+                if (keyboard.hasNext()) {
+                    firstToken = keyboard.next();
+                } else {
+                    break;
+                }
             }
 
             // LONGEST POSSIBLE TOKEN RULE IMPLEMENTATION
