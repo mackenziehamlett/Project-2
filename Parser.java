@@ -230,8 +230,8 @@ public class Parser {
             // TODO "read" is not correct
             case "read": // * read id
                 this.indent(depth + 1);
-                String _biggerTag = this.getElemAndPop();
-                this.println("<" + _biggerTag + ">");
+                // String _biggerTag = this.getElemAndPop();
+                this.println("<" + "read" + ">");
                 String _next = this.getElemAndPop();
                 if (_next.contains("id")) {
                     Object idQueryResult = this.idHashMap.getToken(_next);
@@ -245,7 +245,7 @@ public class Parser {
                     break;
                 }
                 this.indent(depth + 1);
-                this.println("</" + _biggerTag + ">");
+                this.println("</" + "read" + ">");
                 break;
             case "write": // * write <expr>
                 // TODO check for an expression
