@@ -286,6 +286,8 @@ public class Parser {
             // this.idHashMap);
             this.parseHelper(depth + 1, tokenList, this.idHashMap);
         } else {
+            this.indent(depth);
+            this.println("</stmt_list>");
             return;
         }
         
