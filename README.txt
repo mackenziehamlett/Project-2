@@ -19,6 +19,12 @@ files:
   
   IMPORTANT:
   all text file inputs MUST follow the correct format otherwise output will throw exceptions
+  for example: 
+    id MUST BE DEFINED BEFORE IT IS CALLED IN READ OR WRITE
+      A := 1/3
+      read A    IS CORRECT
+__________________________________
+      read A    IS WRONG
   
   Thank you!
   
