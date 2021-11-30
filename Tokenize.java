@@ -10,6 +10,7 @@ public class Tokenize {
     String tokenizedToken;
     String finalString ="";
     String returnVAL = "";
+    String returnVals = "";
 
     // constructor
     public Tokenize(IDHashMap ids) {
@@ -79,19 +80,24 @@ public class Tokenize {
         while (iterator.current() != CharacterIterator.DONE) {
             if (iterator.current() == 43) {
                 exprs += "plus, ";
+                returnVals += "plus, ";
             } else if (iterator.current() == 45) {
                 exprs += "minus, ";
+                returnVals += "minus, ";
             } else if (iterator.current() == 42) {
                 exprs += "times, ";
+                returnVals += "times, ";
             } else if (iterator.current() == 47) {
                 exprs += "div, ";
+                returnVals += "div, ";
             }
             iterator.next();
         }
 
         IDhash.setToken("expr-"+IDhash.size, exprs);
         IDsize++;
-        return "-"+Integer.toString(IDsize);
+        String returnS = returnVals.substring(0, returnVals.length()-2);
+        return "-"+Integer.toString(IDsize)+", "+returnS;
     }
 
     // Find which token the current element is

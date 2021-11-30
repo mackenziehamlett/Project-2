@@ -69,19 +69,25 @@ public class ScannerClass {
             exprToken = "";
             firstToken = keyboard.next();
             valueString += firstToken+", ";
-            CharacterIterator iterator = new StringCharacterIterator(firstToken);
 
             // if there is a comment block or comment line
-            if (firstToken.equals("/*")) {
-                while (!firstToken.equals("*/"))
-                firstToken = keyboard.next();
-            } else if (firstToken.equals("//")) {
-                firstToken = keyboard.nextLine();
-            } 
-            if (firstToken.equals("*/")) {
-                firstToken = keyboard.next();
-            }
+            if (firstToken.startsWith("/*")) {
+                while (!firstToken.endsWith("*/"))
+                    firstToken = keyboard.next();
+            } else if (firstToken.startsWith("//")) {
+                if(keyboard.hasNext()) {
+                    keyboard.nextLine();
+                    firstToken = keyboard.next();
+                }else{break;}
 
+            }
+            if (firstToken.endsWith("*/")) {
+                if(keyboard.hasNext()) {
+                    keyboard.nextLine();
+                    firstToken = keyboard.next();
+                }else{break;}
+            }
+            CharacterIterator iterator = new StringCharacterIterator(firstToken);
             if (isNumber(iterator.current()) && isOperator(iterator.next())) {
                 iterator.previous();
                 while (iterator.current() != CharacterIterator.DONE) {
