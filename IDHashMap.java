@@ -1,3 +1,8 @@
+/*
+    Evan Smith
+    Jacob Cox
+    Mackenzie Hamlett
+*/
 import java.util.HashMap;
 
 public class IDHashMap {
