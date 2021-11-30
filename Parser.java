@@ -22,7 +22,7 @@ public class Parser {
         this.idHashMap = ids;
     }
 
-    // ? TODO return type?
+    
     // Just prints out stuff, recursively calls things based on the token value
     public void parse() {
         this.println("<Program>");
@@ -39,12 +39,10 @@ public class Parser {
     }
 
     private static void debug(String s) {
-        if (true) {
+        if (false) {
             System.out.println("DEBUG: " + s);
         }
     }
-
-    
 
     private void parse_expr(ArrayList<Object> tokenList, IDHashMap idHashMap, int depth) {
         String expr_with_bs = this.idHashMap.getToken(this.getElemAndPop()).toString();
@@ -54,100 +52,130 @@ public class Parser {
         Collections.addAll(expList, expr_with_bs.split(", "));
         // Remove the beginning string
         String expr = expList.remove(0);
+
+        ArrayList<String> numberList = new ArrayList<String>();
+        String _iterStr = "";
+        for (int i = 0; i < expr.length(); i++) {
+            if (Character.isDigit(expr.charAt(i))) {
+                _iterStr += expr.charAt(i);
+            } else {
+                numberList.add(_iterStr);
+                _iterStr = "";
+            }
+        }
+        numberList.add(_iterStr);
         // Remove last empty element
         expList.remove(expList.size() - 1);
 
         // Now start parsing
-        parse_expr_help(expr, tokenList, idHashMap, depth);
+
+        parse_expr_help(expr, tokenList, idHashMap, depth, numberList);
         return;
     }
 
-
-    //* <expr> →<term> <term tail>
-    private void parse_expr_help(String expr, ArrayList<Object> tokenList, IDHashMap idHashMap, int depth) {
+    // * <expr> →<term> <term tail>
+    private void parse_expr_help(String expr, ArrayList<Object> tokenList, IDHashMap idHashMap, int depth,
+            ArrayList<String> numberList) {
         this.indent(depth + 1);
         this.println("<expr>");
-        this.parse_term(depth, false);
+        this.parse_term(depth, false, numberList);
+        if (numberList.size() != 0) {
+            this.indent(depth + 2);
+            this.println("<number>");
+            this.indent(depth + 2);
+            this.println(numberList.get(0));
+            this.indent(depth + 2);
+            this.println("</number>");
+        }
         this.indent(depth + 1);
         this.println("</expr>");
 
     }
 
     // Term and term tail
-    //* <term> →<factor> <fact tail>
-    //* <term tail> →<add op> <term> <term tail> | MT
-    private void parse_term( int depth, boolean isTail) {
+    // * <term> →<factor> <fact tail>
+    // * <term tail> →<add op> <term> <term tail> | MT
+    private void parse_term(int depth, boolean isTail, ArrayList<String> numberList) {
         try {
             this.peakElem(0);
-        } catch(IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             return;
         }
         if (!isTail) {
-            this.parse_factor(depth, false);
-            this.parse_factor(depth, true);
-            
+            this.parse_factor(depth, false, numberList);
+            this.parse_factor(depth, true, numberList);
+
         } else {
             // <add op> <term> <term tail> | MT
             if (this.peakElem(0).equals("plus") || this.peakElem(0).equals("minus")) {
-                this.parse_term(depth, false);
-                this.parse_term(depth, true);
-            } 
+                this.parse_term(depth, false, numberList);
+                this.parse_term(depth, true, numberList);
+            }
         }
     }
-    
-    //*<factor> → lparen <expr> rparen | id | number
-    //* <fact tail> → <mult op> <factor> <fact tail> | MT
+
+    // *<factor> → lparen <expr> rparen | id | number
+    // * <fact tail> → <mult op> <factor> <fact tail> | MT
     // Always jsut one thing and a factor tail
-    private void parse_factor( int depth, boolean isTail) {
+    private void parse_factor(int depth, boolean isTail, ArrayList<String> numberList) {
         try {
             this.peakElem(0);
-        } catch(IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             return;
         }
         if (!isTail) {
-        if (this.peakElem(0).equals("lparen")) {
-            this.getElemAndPop();
-            // Call expr
-            this.parse_expr(tokenList, idHashMap, depth);
-            if (this.peakElem(0).equals("rparen")) {
+            if (this.peakElem(0).equals("lparen")) {
                 this.getElemAndPop();
+                // Call expr
+                this.parse_expr(tokenList, idHashMap, depth);
+                if (this.peakElem(0).equals("rparen")) {
+                    this.getElemAndPop();
+                } else {
+                    System.out.println("No matching rparen for left");
+                }
+            } else if (this.peakElem(0).contains("id")) {
+                this.indent(depth + 1);
+                this.println("<id>");
+                this.indent(depth + 2);
+                this.print(this.idHashMap.getToken(this.getElemAndPop()).toString());
+                this.indent(depth + 1);
+                this.println("</id>");
+
             } else {
-                System.out.println("No matching rparen for left");
+                // TODO print number
+                // int i = 0;
+                // for (; i< expr.length(); i++) {
+                // if (expr.charAt(i) == '/' || expr.charAt(i) == '*' || expr.charAt(i) == '+'
+                // || expr.charAt(i) == '-') {
+                // break;
+                // }
+                // System.out.print(expr.charAt(i));
+                // }
+                if (numberList.size() != 0) {
+                    this.indent(depth + 2);
+                    this.println("<number>");
+                    this.indent(depth + 3);
+                    this.println(numberList.remove(0));
+                    this.indent(depth + 2);
+                    this.println("</number>");
+                }
+
             }
-        } else if (this.peakElem(0).contains("id")) {
-            this.indent(depth + 1);
-            this.print("<id>");
-            this.print(this.idHashMap.getToken(this.getElemAndPop()).toString());
-            this.println("</id>");
-
         } else {
-            // TODO print number
-            // int i = 0;
-            // for (; i< expr.length(); i++) {
-            //     if (expr.charAt(i) == '/' || expr.charAt(i) == '*' || expr.charAt(i) == '+' || expr.charAt(i) == '-') {
-            //         break;
-            //     }
-            //     System.out.print(expr.charAt(i));
-            // }
-            this.indent(depth + 2);
-            this.print("<number>"); this.println("</number>");
-            
+            if (this.peakElem(0).equals("div") || this.peakElem(0).equals("times")) {
+                this.indent(depth + 1);
+                String mult_op = this.getElemAndPop();
+                this.print("<" + mult_op + ">");
+                this.println("</" + mult_op + ">");
+                // <factor>
+                this.parse_factor(depth, false, numberList);
+                // <fact_tail>
+                this.parse_factor(depth, true, numberList);
+            }
         }
-    } else {
-        if (this.peakElem(0).equals("div") || this.peakElem(0).equals("times")) {
-            this.indent(depth+1);
-            String mult_op = this.getElemAndPop();
-            this.print("<"+mult_op+">");
-            this.println("</"+mult_op+">");
-            // <factor>
-            this.parse_factor(depth, false);
-            // <fact_tail>
-            this.parse_factor(depth, true);
-        }
-    }
 
     }
-    
+
     // We have no counter variable, we are resizing tokenList and valueList to
     // remove the first element from the next call
     private void parseHelper(int depth, ArrayList<Object> tokenList, IDHashMap idHashMap) {
@@ -164,8 +192,6 @@ public class Parser {
         this.println("<stmt>");
 
         // This is the current <stmt> object basically
-        // TODO switch case logic here
-        // TODO .....
 
         // ArrayList<Object> tokens = (ArrayList<Object>) tokenList.get(0);
 
@@ -177,10 +203,12 @@ public class Parser {
         if (_switchCase.contains("id")) {
             _switchCase1 = "id";
             this.indent(depth + 1);
-            this.print("<id>");
-            this.print(this.idHashMap.getToken(_switchCase).toString());
-            _switchCase = "id";
+            this.println("<id>");
+            this.indent(depth + 2);
+            this.println(this.idHashMap.getToken(_switchCase).toString());
+            this.indent(depth + 1);
             this.println("</id>");
+            _switchCase = "id";
             // If there is an assign next, we need to show the expr and assign tags
 
             if (this.peakElem(0).equals("assign")) {
@@ -189,7 +217,7 @@ public class Parser {
                 this.getElemAndPop();
                 if (this.peakElem(0).contains("expr"))
                     // Print expr
-                    this.indent(depth + 1);
+                    // this.indent(depth + 1);
                 this.parse_expr(tokenList, idHashMap, depth);
             }
         } else {
@@ -221,11 +249,11 @@ public class Parser {
                 break;
             case "write": // * write <expr>
                 // TODO check for an expression
-                this.indent(depth + 1);
-                this.println("<write>");
                 this.indent(depth + 2);
+                this.println("<write>");
+                // this.indent(depth + 2Tes); // * <expr_print_prob
                 // TODO do expression parsing here EXPR
-                this.parse_expr(tokenList, idHashMap, depth);
+                this.parse_expr(tokenList, idHashMap, depth + 1);
                 this.indent(depth + 1);
                 this.println("</write>");
                 break;

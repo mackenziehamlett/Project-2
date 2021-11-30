@@ -8,6 +8,8 @@ public class IDHashMap {
 
     public int size;
 
+    
+
     /// Used for creating a copy with preset data
     private IDHashMap(HashMap<String, Object> id) {
         this.ids = id;
