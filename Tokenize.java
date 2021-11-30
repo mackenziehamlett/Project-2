@@ -62,6 +62,9 @@ public class Tokenize {
 
     // function to define an invalid token
     public static boolean badToken( String token ) {
+        if (token.contains(":=")) {
+            return false;
+        }
         CharacterIterator iterator = new StringCharacterIterator(token);
         if ((iterator.current() >= 48 && iterator.current() <= 57) || (iterator.current() >= 65 && iterator.current() <= 90) || (iterator.current() >= 97 && iterator.current() <= 122) || (iterator.current() >= 40 && iterator.current() <= 46)) {
             return false;
