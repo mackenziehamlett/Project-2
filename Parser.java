@@ -25,8 +25,9 @@ public class Parser {
     // ? TODO return type?
     // Just prints out stuff, recursively calls things based on the token value
     public void parse() {
-        // TODO print <program>
-        this.parseHelper(0, this.tokenList, this.idHashMap);
+        this.println("<Program>");
+        this.parseHelper(1, this.tokenList, this.idHashMap);
+        this.println("</Program>");
     }
 
     private String getElemAndPop() {
