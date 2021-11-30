@@ -275,7 +275,9 @@ public class Parser {
         // Now that we got the switch/case thing done, we go to the next call
         // Call other parseHelper functions to do specific things, that need their own
         // depth
-
+        this.indent(depth + 1);
+        this.println("</stmt>");
+        
         // This is the next <stmt_list> object basically
         if (tokenList.size() != 0) {
             // * Now we are down into <stmt>'s <stmt_list>
@@ -286,12 +288,10 @@ public class Parser {
         } else {
             return;
         }
-
-        this.indent(depth + 2);
-        this.println("</stmt>");
-        this.indent(depth + 1);
+        
+        
+        this.indent(depth);
         this.println("</stmt_list>");
-
     }
 
     /*
